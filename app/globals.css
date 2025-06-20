@@ -1,26 +1,32 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Soft, light mode colors with bold accents */
+  --color-background: #F6F8FB;      /* very soft off-white blue */
+  --color-surface: #FFFFFF;         /* pure white for cards */
+  --color-primary: #3B5BDB;         /* bold, confident blue */
+  --color-secondary: #7C3AED;       /* vibrant accent purple */
+  --color-text: #1E293B;            /* strong slate for readability */
+  --color-subheading: #64748B;      /* muted blue-grey */
+  --color-border: #CBD5E1;          /* light blue-grey border */
+  --color-cta-text: #FFFFFF;        /* white for CTA text */
+  --font-sans: var(--font-geist-sans, Arial, Helvetica, sans-serif);
+  --font-mono: var(--font-geist-mono, monospace);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --color-background: #181A20;
+  --color-surface: #232634;
+  --color-primary: #7B9BFF;
+  --color-secondary: #B692F6;
+  --color-text: #F1F5F9;
+  --color-subheading: #A5B4FC;
+  --color-border: #313244;
+  --color-cta-text: #232634;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-sans);
 }
