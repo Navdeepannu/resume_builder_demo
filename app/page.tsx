@@ -125,10 +125,11 @@ export default function Home() {
         <form onSubmit={handleResumeSubmit(onResumeSubmit)} className="bg-white rounded-lg shadow p-6 flex flex-col gap-4">
           <input
             type="file"
-            accept=".pdf,.doc,.docx"
+            accept=".pdf,.doc,.docx,.txt,.rtf,.odt"
             {...registerResume("resume", { required: "Resume file is required" })}
             className="border p-2 rounded"
           />
+          <span className="text-xs text-gray-500">Accepted: PDF, Word (.doc/.docx), Text (.txt), Rich Text (.rtf), OpenDocument (.odt)</span>
           {resumeErrors.resume && <span className="text-red-600 text-sm">{resumeErrors.resume.message}</span>}
           <button
             type="submit"

@@ -9,6 +9,7 @@ import re
 import google.generativeai as genai
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+import os
 
 app = FastAPI()
 
@@ -43,6 +44,31 @@ def extract_text_from_docx(file_path):
     except Exception as e:
         text = ""
     return text
+
+def extract_text_from_txt(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            return f.read()
+    except Exception:
+        return ""
+
+def extract_text_from_rtf(file_path):
+    try:
+        import striprtf
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            return striprtf.rtf_to_text(f.read())
+    except Exception:
+        return ""
+
+def extract_text_from_odt(file_path):
+    try:
+        from odf.opendocument import load
+        from odf.text import P
+        doc = load(file_path)
+        paragraphs = doc.getElementsByType(P)
+        return '\n'.join([str(p) for p in paragraphs])
+    except Exception:
+        return ""
 
 def extract_keywords(text):
     # Simple keyword extraction: words longer than 3 chars, ignore common stopwords
@@ -97,12 +123,17 @@ async def upload_resume(file: UploadFile = File(...)):
     file_location = os.path.join(UPLOAD_DIR, file.filename)
     with open(file_location, "wb") as f:
         f.write(await file.read())
-    # Parse file and extract text/keywords
     ext = os.path.splitext(file.filename)[1].lower()
     if ext == ".pdf":
         text = extract_text_from_pdf(file_location)
     elif ext in [".docx", ".doc"]:
         text = extract_text_from_docx(file_location)
+    elif ext == ".txt":
+        text = extract_text_from_txt(file_location)
+    elif ext == ".rtf":
+        text = extract_text_from_rtf(file_location)
+    elif ext == ".odt":
+        text = extract_text_from_odt(file_location)
     else:
         text = ""
     keywords = extract_keywords(text)
